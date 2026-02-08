@@ -4,42 +4,54 @@ class Program
 {
     static void Main()
     {
-        Inicio();
+        bool salir = false;
+
+        while (!salir)
+        {
+            Inicio();
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            int sel = int.Parse(Console.ReadLine());
+            Console.ForegroundColor = ConsoleColor.White;
+
+            switch (sel)
+            {
+                case 1:
+                    EjercicioUno();
+                    break;
+                case 2:
+                    Console.WriteLine(EjercicioDos());
+                    break;
+                case 3:
+                    EjercicioTres();
+                    break;
+                case 4:
+                    EjercicioCuatro();
+                    break;
+                case 0:
+                    salir = true;
+                    continue;
+                default:
+                    PrintText("ERROR!!!!! ese no es un ejercicio >:(", ConsoleColor.Red);
+                    break;
+            }
+
+            if (!salir)
+            {
+                Console.WriteLine("\nPresiona una tecla para volver al menú...");
+                Console.ReadKey();
+                Console.Clear();
+            }
+        }
     }
 
     #region INICIO
     static void Inicio()
     {
-        PrintText("\n\n=======================\nElige el ejercicio que quieres ejecutar :D ", ConsoleColor.Magenta);
-        PrintText("1. Fibonacci\n2. Segundos a minutos/horas\n3. Apuesta\n4. Invertir mensaje", ConsoleColor.White);
+        PrintText("\n\n=======================", ConsoleColor.Magenta);
+        PrintText("Elige el ejercicio que quieres ejecutar :D", ConsoleColor.Magenta);
+        PrintText("1. Fibonacci\n2. Segundos a HH:MM:SS\n3. Apuesta\n4. Invertir mensaje\n0. Salir", ConsoleColor.White);
         PrintText("=======================", ConsoleColor.Magenta);
-
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        int sel = int.Parse(Console.ReadLine());
-        Console.ForegroundColor = ConsoleColor.White;
-
-        if (sel < 1 || sel > 4)
-        {
-            PrintText("ERROR!!!!! ese no es un ejercicio >:(", ConsoleColor.Red);
-            Inicio();
-        }
-
-        switch (sel)
-        {
-            case 1:
-                EjercicioUno();
-                break;
-            case 2:
-                Console.WriteLine(EjercicioDos());
-                Inicio();
-                break;
-            case 3:
-                EjercicioTres();
-                break;
-            case 4:
-                EjercicioCuatro();
-                break;
-        }
     }
     #endregion
 
@@ -48,12 +60,11 @@ class Program
     {
         Console.WriteLine("Holi :]");
         PrintText("Ingresa el valor de n: ", ConsoleColor.Yellow);
-        int n = int.Parse(Console.ReadLine());
 
-        if (n <= 0)
+        int n;
+        while (!int.TryParse(Console.ReadLine(), out n) || n <= 0)
         {
-            PrintText("Por favor ingresa un número positivo :(", ConsoleColor.Red);
-            return;
+            PrintText("Ingresa un número entero positivo :(", ConsoleColor.Red);
         }
 
         PrintText("\n========= RESULTADO =========", ConsoleColor.Green);
@@ -78,8 +89,6 @@ class Program
             a = b;
             b = siguiente;
         }
-
-        Inicio();
     }
 
     static bool EsPrimo(int numero)
@@ -106,7 +115,12 @@ class Program
         Console.WriteLine("Holi :]");
         PrintText("Ingresa el valor de segundos: ", ConsoleColor.Yellow);
 
-        int totalSegundos = int.Parse(Console.ReadLine());
+        int totalSegundos;
+        
+        while (!int.TryParse(Console.ReadLine(), out totalSegundos))
+        {
+            PrintText("Ingresa un número válido :[", ConsoleColor.Red);
+        }
 
         if (totalSegundos < 0)
         {
@@ -130,14 +144,22 @@ class Program
         int apostado = 1000;
 
         PrintText("Ingresa el número ganador (4 cifras): ", ConsoleColor.Yellow);
-        int resultado = int.Parse(Console.ReadLine());
+        int resultado;
+        while (!int.TryParse(Console.ReadLine(), out resultado))
+        {
+            PrintText("Ingresa un número válido porfa :(", ConsoleColor.Red);
+        }
 
         PrintText("Ingresa el número apostado (4 cifras): ", ConsoleColor.Yellow);
-        int num = int.Parse(Console.ReadLine());
+        int num;
+        while (!int.TryParse(Console.ReadLine(), out num))
+        {
+            PrintText("Ingresa un número válido porfa :(", ConsoleColor.Red);
+        }
 
         if (resultado < 1000 || resultado > 9999 || num < 1000 || num > 9999)
         {
-            Console.WriteLine("Error: ambos números deben tener 4 cifras");
+            PrintText("Error: ambos números deben tener 4 cifras >:(", ConsoleColor.Red);
             return;
         }
 
@@ -151,8 +173,6 @@ class Program
         {
             PrintText("No ganaste nada :(", ConsoleColor.Red);
         }
-
-        Inicio();
     }
 
     static int DeterminarPremio(int resultado, int num, int apostado)
@@ -226,8 +246,6 @@ class Program
         PrintText("Ingresa el mensaje: ", ConsoleColor.Yellow);
 
         manager.Print(Console.ReadLine());
-
-        Inicio();
     }
 }
 
